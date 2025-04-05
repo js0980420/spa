@@ -637,14 +637,14 @@ footer {
     transform: translateY(-5px);
 }
 
-/* WhatsApp 聯絡按鈕 */
-.whatsapp-button {
+/* LINE 聯絡按鈕 */
+.line-button {
     position: fixed;
     bottom: 30px;
     left: 30px;
     width: 60px;
     height: 60px;
-    background-color: #25d366;
+    background-color: #06C755;
     color: white;
     border-radius: 50%;
     display: flex;
@@ -656,8 +656,8 @@ footer {
     z-index: 999;
 }
 
-.whatsapp-button:hover {
-    background-color: #128c7e;
+.line-button:hover {
+    background-color: #05a847;
     transform: scale(1.1);
 }
 
@@ -723,7 +723,7 @@ footer {
     }
     
     .back-to-top,
-    .whatsapp-button {
+    .line-button {
         width: 40px;
         height: 40px;
         font-size: 1rem;
