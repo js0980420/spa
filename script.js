@@ -10,9 +10,6 @@ function initApp() {
     // 初始化返回頂部按鈕
     initBackToTop();
     
-    // 初始化評價輪播
-    initTestimonialSlider();
-    
     // 初始化表單驗證
     initFormValidation();
     
@@ -59,51 +56,16 @@ function initBackToTop() {
     });
 }
 
-// 評價輪播
-function initTestimonialSlider() {
-    const testimonials = document.querySelectorAll('.testimonial-item');
-    const dots = document.querySelectorAll('.dot');
-    let currentIndex = 0;
-    
-    // 隱藏所有評價，只顯示當前評價
-    function showTestimonial(index) {
-        testimonials.forEach((testimonial, i) => {
-            testimonial.style.display = i === index ? 'block' : 'none';
-        });
-        
-        dots.forEach((dot, i) => {
-            dot.classList.toggle('active', i === index);
-        });
-    }
-    
-    // 初始顯示第一個評價
-    showTestimonial(currentIndex);
-    
-    // 點擊圓點切換評價
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', function() {
-            currentIndex = index;
-            showTestimonial(currentIndex);
-        });
-    });
-    
-    // 自動輪播
-    setInterval(function() {
-        currentIndex = (currentIndex + 1) % testimonials.length;
-        showTestimonial(currentIndex);
-    }, 5000);
-}
-
 // 表單驗證
 function initFormValidation() {
-    const form = document.getElementById('appointment-form');
+    const contactForm = document.getElementById('contactForm');
     
-    if (form) {
-        form.addEventListener('submit', function(e) {
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
             // 獲取表單數據
-            const formData = new FormData(form);
+            const formData = new FormData(contactForm);
             const formValues = Object.fromEntries(formData.entries());
             
             // 簡單驗證
@@ -119,18 +81,12 @@ function initFormValidation() {
             } else if (!formValues.service) {
                 isValid = false;
                 errorMessage = '請選擇服務項目';
-            } else if (!formValues.date) {
-                isValid = false;
-                errorMessage = '請選擇預約日期';
-            } else if (!formValues.time) {
-                isValid = false;
-                errorMessage = '請選擇預約時間';
             }
             
             if (isValid) {
                 // 模擬表單提交成功
-                alert('預約成功！我們會盡快與您聯繫確認預約細節。');
-                form.reset();
+                alert('感謝您的諮詢！我會盡快與您聯繫。');
+                contactForm.reset();
             } else {
                 alert(errorMessage);
             }
@@ -200,23 +156,6 @@ function initAnimations() {
     window.addEventListener('scroll', animateOnScroll);
 }
 
-// 日期限制 (只能選擇今天之後的日期)
-document.addEventListener('DOMContentLoaded', function() {
-    const dateInput = document.getElementById('date');
-    if (dateInput) {
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        let mm = today.getMonth() + 1;
-        let dd = today.getDate();
-        
-        if (mm < 10) mm = '0' + mm;
-        if (dd < 10) dd = '0' + dd;
-        
-        const formattedToday = yyyy + '-' + mm + '-' + dd;
-        dateInput.setAttribute('min', formattedToday);
-    }
-});
-
 // 服務項目懸停效果
 document.addEventListener('DOMContentLoaded', function() {
     const serviceItems = document.querySelectorAll('.service-item');
@@ -231,5 +170,75 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.transform = 'translateY(-5px)';
             this.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.15)';
         });
+    });
+});
+
+// 關於我區塊動畫效果
+document.addEventListener('DOMContentLoaded', function() {
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) {
+        const aboutImage = aboutSection.querySelector('.about-image');
+        const aboutText = aboutSection.querySelector('.about-text');
+        
+        // 初始設置
+        aboutImage.style.opacity = '0';
+        aboutImage.style.transform = 'translateX(-20px)';
+        aboutImage.style.transition = 'all 0.8s ease';
+        
+        aboutText.style.opacity = '0';
+        aboutText.style.transform = 'translateX(20px)';
+        aboutText.style.transition = 'all 0.8s ease 0.3s';
+        
+        // 監聽滾動事件
+        window.addEventListener('scroll', function() {
+            const sectionTop = aboutSection.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            
+            if (sectionTop < windowHeight * 0.75) {
+                aboutImage.style.opacity = '1';
+                aboutImage.style.transform = 'translateX(0)';
+                
+                aboutText.style.opacity = '1';
+                aboutText.style.transform = 'translateX(0)';
+            }
+        });
+        
+        // 頁面載入時檢查一次
+        if (aboutSection.getBoundingClientRect().top < window.innerHeight * 0.75) {
+            aboutImage.style.opacity = '1';
+            aboutImage.style.transform = 'translateX(0)';
+            
+            aboutText.style.opacity = '1';
+            aboutText.style.transform = 'translateX(0)';
+        }
+    }
+});
+
+// 預約流程動畫效果
+document.addEventListener('DOMContentLoaded', function() {
+    const bookingSteps = document.querySelectorAll('.booking-step');
+    
+    bookingSteps.forEach((step, index) => {
+        // 初始設置
+        step.style.opacity = '0';
+        step.style.transform = 'translateY(20px)';
+        step.style.transition = `all 0.6s ease ${index * 0.2}s`;
+        
+        // 監聽滾動事件
+        window.addEventListener('scroll', function() {
+            const stepTop = step.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            
+            if (stepTop < windowHeight * 0.8) {
+                step.style.opacity = '1';
+                step.style.transform = 'translateY(0)';
+            }
+        });
+        
+        // 頁面載入時檢查一次
+        if (step.getBoundingClientRect().top < window.innerHeight * 0.8) {
+            step.style.opacity = '1';
+            step.style.transform = 'translateY(0)';
+        }
     });
 });
